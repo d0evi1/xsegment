@@ -1,0 +1,50 @@
+VPATH=
+
+MY_INC = -I..
+MY_LIB = 
+
+
+ALL_INC = $(MY_INC) 
+ALL_LIB = $(MY_LIB)
+
+LIB = fi 
+
+all: $(LIB)
+#OBJ_DIR = ./obj
+
+#ctags --recurse --verbose
+
+#-----------------------------------------------
+# -g(-ggdb):生成调试信息
+# -Wall: 警告信息
+#-----------------------------------------------
+CFLAGS = -g -Wall # -lrt -Fo $(OBJ_DIR)
+
+CC = gcc
+CXX = g++
+
+#-------------------------------------------------
+#定义make识别后缀
+#-------------------------------------------------
+.SUFFIXES: .c .cpp .o .h
+
+#-------------------------------------------------
+# 双后缀规则
+# 自动化变量: $@ -- 所有的.o目标集
+# 自动化变量：$< -- 所有的.c依赖目标集
+#-------------------------------------------------
+.c.o:
+	$(CC) -c $(CFLAGS) -o $@ $^ $(ALL_INC) $(ALL_LIB)
+	#$(CC) -c $(CFLAGS) -o $(OBJ_DIR)/$@ $^ $(ALL_INC) $(ALL_LIB)
+	
+.cpp.o:
+	$(CXX) -c $(CFLAGS) -o $@ $^ $(ALL_INC) $(ALL_LIB)
+	#$(CXX) -c $(CFLAGS) -o $(OBJ_DIR)/$@ $^ $(ALL_INC) $(ALL_LIB)
+
+fi: ContextStat.o Dictionary.o DynamicArray.o NShortPath.o Queue.o Result.o SegGraph.o Segment.o Span.o UnknowWord.o Utility.o     
+	ar -cr fi.a *.o
+
+.PHONY: clean
+
+clean:
+	@rm $(BIN) *.o
